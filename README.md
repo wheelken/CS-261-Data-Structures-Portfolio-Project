@@ -1,61 +1,81 @@
-# CS-261-Data-Structures-Portfolio-Project
-HashMap Implementation 
-# HashMap Implementation (Open Addressing)
+# HashMap Implementations – Open Addressing & Chaining
 
+**Course:** CS261 - Data Structures  
+**Assignment:** Assignment 6  
 **Author:** Ken Wheeler  
 **Due Date:** 6/6/24  
 
 ---
 
-## Overview
-This project implements a **HashMap** using **open addressing with quadratic probing**.  
-The implementation supports dynamic resizing, tombstone handling, and iteration across stored key/value pairs.  
+## 📖 Overview
+This project contains **two separate HashMap implementations**:
 
-The design follows the requirements of CS261 and is intended to run in any editor using **Python 3**.
+1. **Open Addressing with Quadratic Probing** (`hash_map_open.py`)  
+2. **Chaining with Linked Lists** (`hash_map_chaining.py`)  
 
----
-
-## Features
-- **put(key, value):** Insert or update key/value pairs. Resizes table when load factor ≥ 0.5.  
-- **quadratic_probe():** Helper for resolving collisions via quadratic probing.  
-- **resize_table(new_capacity):** Dynamically resizes the table to the next prime capacity.  
-- **table_load():** Returns current load factor.  
-- **empty_buckets():** Returns number of empty buckets.  
-- **get(key):** Retrieves value for a given key, or `None` if not found.  
-- **contains_key(key):** Checks if a key exists in the map.  
-- **remove(key):** Removes a key/value pair by marking the slot as a tombstone.  
-- **get_keys_and_values():** Returns a dynamic array of all active key/value pairs.  
-- **clear():** Clears the table without changing capacity.  
-- **Iteration support:** `__iter__()` and `__next__()` allow traversal of active entries.  
+Both implementations support dynamic resizing, collision handling, and iteration across stored key/value pairs.  
+The design follows CS261 specifications and runs in any editor using **Python 3**.
 
 ---
 
-## Requirements
+## ⚙️ Features
+
+### 🔹 Open Addressing (`hash_map_open.py`)
+- **put(key, value):** Insert/update pairs; resizes when load factor ≥ 0.5.  
+- **quadratic_probe():** Resolves collisions via quadratic probing.  
+- **resize_table(new_capacity):** Resizes to next prime capacity.  
+- **table_load():** Returns load factor.  
+- **empty_buckets():** Counts empty slots.  
+- **get(key):** Retrieves value or `None`.  
+- **contains_key(key):** Checks key existence.  
+- **remove(key):** Marks slot as tombstone.  
+- **get_keys_and_values():** Returns all active pairs.  
+- **clear():** Clears table without changing capacity.  
+- **Iteration support:** `__iter__()` and `__next__()` skip tombstones.  
+
+---
+
+### 🔹 Chaining (`hash_map_chaining.py`)
+- **put(key, value):** Insert/update pairs; resizes when load factor ≥ 1.0.  
+- **resize_table(new_capacity):** Doubles capacity, ensures prime, rehashes all pairs.  
+- **table_load():** Returns load factor.  
+- **empty_buckets():** Counts empty linked lists.  
+- **get(key):** Retrieves value or `None`.  
+- **contains_key(key):** Checks key existence via linked list search.  
+- **remove(key):** Removes node from linked list.  
+- **get_keys_and_values():** Returns all pairs in a dynamic array.  
+- **clear():** Clears table without changing capacity.  
+- **find_mode(array):** Returns `(DynamicArray of mode(s), highest frequency)` in O(N).  
+
+---
+
+## 🛠️ Requirements
 - Python 3.x  
-- No external libraries required (uses provided `DynamicArray` and `HashEntry` classes).  
+- Provided `DynamicArray`, `HashEntry`, and `LinkedList` classes.  
+- No external libraries required.  
 
 ---
 
-##  How to Run
+## ▶️ How to Run
 1. Clone or download this repository.  
-2. Open the project in your preferred Python 3 editor (e.g., VS Code, PyCharm, or IDLE).  
-3. Run the file containing the `HashMap` class.  
-4. Use the provided methods to test functionality. Example:
+2. Open in your preferred Python 3 editor (VS Code, PyCharm, IDLE).  
+3. Run either implementation file:  
 
-```python
-from hash_map import HashMap
+```bash
+python3 hash_map_open.py
+python3 hash_map_chaining.py
 
-# Create a new hash map
-hm = HashMap()
+Example Usage
+from hash_map_open import HashMap as OpenHashMap
+from hash_map_chaining import HashMap as ChainingHashMap
 
-# Insert key/value pairs
-hm.put("apple", 10)
-hm.put("banana", 20)
+# Open Addressing
+hm_open = OpenHashMap()
+hm_open.put("apple", 10)
+print(hm_open.get("apple"))   # Output: 10
 
-# Retrieve values
-print(hm.get("apple"))   # Output: 10
-print(hm.contains_key("banana"))  # Output: True
+# Chaining
+hm_chain = ChainingHashMap()
+hm_chain.put("banana", 20)
+print(hm_chain.contains_key("banana"))  # Output: True
 
-# Remove a key
-hm.remove("apple")
-print(hm.get("apple"))   # Output: None
